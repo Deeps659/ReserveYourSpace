@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="myBookingsCellID" id="gTV-IL-0wX" customClass="MyBookingsCollectionViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5lD-5g-uSK">
+                        <rect key="frame" x="0.0" y="40" width="100" height="60"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wpx-RX-A2h">
+                        <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="NbG-3T-AtA"/>
+                            <constraint firstAttribute="width" constant="30" id="hCa-f5-4KO"/>
+                        </constraints>
+                        <state key="normal" image="checkin_30.png"/>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NGP-8S-pE9">
+                        <rect key="frame" x="70" y="0.0" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="Nef-jJ-ILO"/>
+                            <constraint firstAttribute="height" constant="30" id="vni-IT-R2T"/>
+                        </constraints>
+                        <state key="normal" image="cancel3_30.png"/>
+                    </button>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="Wpx-RX-A2h" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="Do1-5r-wVG"/>
+                <constraint firstItem="Wpx-RX-A2h" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="WxH-ih-bLO"/>
+                <constraint firstAttribute="trailing" secondItem="NGP-8S-pE9" secondAttribute="trailing" id="cU1-9G-i0g"/>
+                <constraint firstItem="NGP-8S-pE9" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="dQE-90-vF4"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
+            <size key="customSize" width="100" height="100"/>
+            <connections>
+                <outlet property="btnCancel" destination="NGP-8S-pE9" id="bok-DP-qt9"/>
+                <outlet property="btnCheckedIn" destination="Wpx-RX-A2h" id="jMF-Ma-Fnd"/>
+                <outlet property="lblRoomName" destination="5lD-5g-uSK" id="fGT-Yv-zPJ"/>
+            </connections>
+            <point key="canvasLocation" x="59" y="79"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="cancel3_30.png" width="30" height="30"/>
+        <image name="checkin_30.png" width="30" height="30"/>
+    </resources>
+</document>
