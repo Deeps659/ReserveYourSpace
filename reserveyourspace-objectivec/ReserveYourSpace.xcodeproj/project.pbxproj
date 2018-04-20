@@ -39,6 +39,7 @@
 		735DED6820899775001C4894 /* happy.png in Resources */ = {isa = PBXBuildFile; fileRef = 735DED6720899775001C4894 /* happy.png */; };
 		735DED6B20899C4C001C4894 /* calendar_1.PNG in Resources */ = {isa = PBXBuildFile; fileRef = 735DED6920899C4B001C4894 /* calendar_1.PNG */; };
 		735DED6C20899C4C001C4894 /* calendar_2.PNG in Resources */ = {isa = PBXBuildFile; fileRef = 735DED6A20899C4B001C4894 /* calendar_2.PNG */; };
+		77465851208A0F1E006B8C6D /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77465850208A0F1E006B8C6D /* HomeViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +103,8 @@
 		735DED6720899775001C4894 /* happy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = happy.png; sourceTree = "<group>"; };
 		735DED6920899C4B001C4894 /* calendar_1.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = calendar_1.PNG; sourceTree = "<group>"; };
 		735DED6A20899C4B001C4894 /* calendar_2.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = calendar_2.PNG; sourceTree = "<group>"; };
+		7746584F208A0F1E006B8C6D /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		77465850208A0F1E006B8C6D /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +171,8 @@
 				735DED0B2085EC54001C4894 /* Info.plist */,
 				735DED0C2085EC54001C4894 /* main.m */,
 				735DED032085EC54001C4894 /* ReserveYourSpace.xcdatamodeld */,
+				7746584F208A0F1E006B8C6D /* HomeViewController.h */,
+				77465850208A0F1E006B8C6D /* HomeViewController.m */,
 			);
 			path = ReserveYourSpace;
 			sourceTree = "<group>";
@@ -394,6 +399,7 @@
 				735DECFC2085EC54001C4894 /* AppDelegate.m in Sources */,
 				735DED0D2085EC54001C4894 /* main.m in Sources */,
 				735DED052085EC54001C4894 /* ReserveYourSpace.xcdatamodeld in Sources */,
+				77465851208A0F1E006B8C6D /* HomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
