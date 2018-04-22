@@ -24,5 +24,6 @@ extern NSString * const collectionCellID;
 
 + (UINib *)nib;
 -(void)configureCell;
+-(void)initializeCellValues:(NSIndexPath*)indexPath;
 
 @end

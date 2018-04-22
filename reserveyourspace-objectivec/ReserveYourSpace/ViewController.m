@@ -10,9 +10,10 @@
 #import "CollectionViewCell.h"
 #import "MyBookingsCollectionViewCell.h"
 #import "MeetingDetailViewController.h"
+#import <AVFoundation/AVFoundation.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
-@interface ViewController ()<UISearchBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate>
+@interface ViewController ()<UISearchBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, AVCaptureMetadataOutputObjectsDelegate>
 {
     NSArray *originalData;
     NSMutableArray *searchData;
@@ -24,11 +25,11 @@
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionRooms;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionMyBookings;
 @property (strong, nonatomic) UILabel *myBookingsLabel;
-@property (strong, nonatomic) UISearchBar *searchBar;
-@property (strong, nonatomic) UISearchController *searchController;
 @property (strong, nonatomic) UIImageView *qrCodeImage;
 @property (strong, nonatomic) UIImagePickerController *imagePickerController;
 @property (strong, nonatomic) UIView *controllerView;
+@property (nonatomic, strong) AVCaptureSession *captureSession;
+@property (nonatomic, strong) AVCaptureVideoPreviewLayer *videoPreviewLayer;
 
 @end
 
@@ -100,26 +101,55 @@
         if(!_controllerView){
             
             if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
-                _imagePickerController = [[UIImagePickerController alloc] init];
+//                _imagePickerController = [[UIImagePickerController alloc] init];
+//
+//                _imagePickerController.delegate = self;
+//                _imagePickerController.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeImage, nil];
+//                _imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+//                _imagePickerController.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+//
+//                _controllerView = _imagePickerController.view;
+//                [_controllerView setFrame:CGRectMake(_collectionRooms.frame.origin.x, _collectionRooms.frame.origin.y + _collectionRooms.frame.size.height, _collectionRooms.frame.size.width, height)];
+//                _controllerView.alpha = 0.0;
+//                [self.view addSubview:_controllerView];
+//
+//                [UIView animateWithDuration:0.3
+//                                      delay:0.0
+//                                    options:UIViewAnimationOptionCurveLinear
+//                                 animations:^{
+//                                     _controllerView.alpha = 1.0;
+//                                 }
+//                                 completion:nil
+//                 ];
                 
-                _imagePickerController.delegate = self;
-                _imagePickerController.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeImage, nil];
-                _imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-                _imagePickerController.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+                NSError *error;
                 
-                _controllerView = _imagePickerController.view;
-                [_controllerView setFrame:CGRectMake(_collectionRooms.frame.origin.x, _collectionRooms.frame.origin.y + _collectionRooms.frame.size.height, _collectionRooms.frame.size.width, height)];
-                _controllerView.alpha = 0.0;
+                AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+                
+                AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:&error];
+                if (!input) {
+                    NSLog(@"%@", [error localizedDescription]);
+                }
+                
+                _captureSession = [[AVCaptureSession alloc] init];
+                [_captureSession addInput:input];
+                
+                AVCaptureMetadataOutput *captureMetadataOutput = [[AVCaptureMetadataOutput alloc] init];
+                [_captureSession addOutput:captureMetadataOutput];
+                
+                dispatch_queue_t dispatchQueue;
+                dispatchQueue = dispatch_queue_create("myQueue", NULL);
+                [captureMetadataOutput setMetadataObjectsDelegate:self queue:dispatchQueue];
+                [captureMetadataOutput setMetadataObjectTypes:[NSArray arrayWithObject:AVMetadataObjectTypeQRCode]];
+                
+                _videoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:_captureSession];
+                [_videoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
+                _controllerView = [[UIView alloc] initWithFrame:CGRectMake(_collectionRooms.frame.origin.x, _collectionRooms.frame.origin.y + _collectionRooms.frame.size.height, _collectionRooms.frame.size.width, height)];
+                [_videoPreviewLayer setFrame:_controllerView.layer.bounds];
+                
+                [_controllerView.layer addSublayer:_videoPreviewLayer];
                 [self.view addSubview:_controllerView];
-                
-                [UIView animateWithDuration:0.3
-                                      delay:0.0
-                                    options:UIViewAnimationOptionCurveLinear
-                                 animations:^{
-                                     _controllerView.alpha = 1.0;
-                                 }
-                                 completion:nil
-                 ];
+                [_captureSession startRunning];
             }
             else{
             _qrCodeImage = [[UIImageView alloc] initWithFrame:CGRectMake(_collectionRooms.frame.origin.x, _collectionRooms.frame.origin.y + _collectionRooms.frame.size.height, _collectionRooms.frame.size.width, height)];
@@ -137,6 +167,31 @@
             [_qrCodeImage setFrame:CGRectMake(_collectionRooms.frame.origin.x, _collectionRooms.frame.origin.y + _collectionRooms.frame.size.height, _collectionRooms.frame.size.width, height)];
                 [_qrCodeImage setImage:[UIImage imageNamed:@"qrcodeimage.png"]];}
         }
+}
+
+-(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection{
+    if (metadataObjects != nil && [metadataObjects count] > 0) {
+        AVMetadataMachineReadableCodeObject *metadataObj = [metadataObjects objectAtIndex:0];
+        if ([[metadataObj type] isEqualToString:AVMetadataObjectTypeQRCode]) {
+            //  [_response performSelectorOnMainThread:@selector(setText:) withObject:[metadataObj stringValue] waitUntilDone:NO];
+            [self performSelectorOnMainThread:@selector(showRoomDetails) withObject:nil waitUntilDone:NO];
+            
+            [self performSelectorOnMainThread:@selector(stopReading) withObject:nil waitUntilDone:NO];
+            //  [_scanButton performSelectorOnMainThread:@selector(setTitle:) withObject:@"Start!" waitUntilDone:NO];
+            //   _isReading = NO;
+        }
+    }
+}
+
+-(void)showRoomDetails{
+    MeetingDetailViewController *mdVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"mdVC"];
+    [self presentViewController:mdVC animated:YES completion:nil];
+}
+-(void)stopReading{
+    [_captureSession stopRunning];
+    _captureSession = nil;
+    
+    // [_videoPreviewLayer removeFromSuperlayer];
 }
 
 - (void)addMyBookings{
@@ -195,6 +250,8 @@
 
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
     NSLog(@"searchbar text : searchBarTextDidBeginEditing" );
+    [searchBar setShowsCancelButton:YES animated:YES];
+
     
 }
 
@@ -210,14 +267,16 @@
 
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
 {
-    [searchBar resignFirstResponder];
+    //[searchBar resignFirstResponder];
+    [searchBar setShowsCancelButton:NO animated:YES];
+    
 }
 
 -(BOOL) searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     
     if([text isEqualToString:@"\n"])
     {
-        [searchBar resignFirstResponder];
+       // [searchBar resignFirstResponder];
         return NO;
     }
     return YES;
@@ -226,6 +285,7 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar
 {
+    NSLog(@"pressed cross on search");
     [searchBar resignFirstResponder];
 }
 
@@ -244,6 +304,7 @@
     if(collectionView == _collectionRooms){
         CollectionViewCell *collectionCell = (CollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:collectionCellID forIndexPath:indexPath];
         [collectionCell configureCell];
+        [collectionCell initializeCellValues:indexPath];
         cell = collectionCell;
     }
     
@@ -260,7 +321,7 @@
     NSInteger count = 0;
     
     if(collectionView == _collectionMyBookings)
-        count = 3;
+        count = 2;
     
     if(collectionView == _collectionRooms)
         count = searchData.count;
@@ -277,6 +338,36 @@
     [self presentViewController:mdVC animated:YES completion:nil];
     
 }
+//- (CGSize)collectionView:(UICollectionView *)collectionView
+//                  layout:(UICollectionViewLayout *)collectionViewLayout
+//  sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+//    
+//    if(collectionView == _collectionMyBookings)
+//        return CGSizeMake((collectionView.frame.size.width/2)-40, 80);
+//    
+//    if(collectionView == _collectionRooms)
+//        return CGSizeMake(85, 80);
+//    
+//    
+//    return CGSizeZero;
+//    
+//    
+//}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView
+                   layout:(UICollectionViewLayout *)collectionViewLayout
+minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+            if(collectionView == _collectionMyBookings)
+                return 30;
+    
+            if(collectionView == _collectionRooms)
+                return 10;
+    
+    
+            return 0;
+}
+
+
 
 #pragma UITapGestureRecogniser
 
@@ -311,20 +402,20 @@
 
 #pragma camera delegate
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    
-    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
-    _qrCodeImage.image = chosenImage;
-    
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-    
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-    
-}
+//- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+//
+//    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+//    _qrCodeImage.image = chosenImage;
+//
+//    [picker dismissViewControllerAnimated:YES completion:NULL];
+//
+//}
+//
+//- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+//
+//    [picker dismissViewControllerAnimated:YES completion:NULL];
+//
+//}
 /* Unused delegate methods
  
  

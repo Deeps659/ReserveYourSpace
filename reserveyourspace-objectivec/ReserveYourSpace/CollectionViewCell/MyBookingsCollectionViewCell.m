@@ -26,20 +26,27 @@ NSString * const myBookingsCellID = @"myBookingsCellID";
     
     [self beautifyView:self];
     if (indexPath.item == 0){
-        [self.btnCheckedIn setImage:[UIImage imageNamed:@"checkin_30.png"] forState:UIControlStateNormal];
+        [self.btnCheckedIn setImage:[UIImage imageNamed:@"check.png"] forState:UIControlStateNormal];
         [self.btnCheckedIn addTarget:self action:@selector(checkinAction) forControlEvents:UIControlEventTouchUpInside];
+        [self.lblRoomName setText:@"Corbett"];
+        [self.lblRoomDate setText:@"23 Apr"];
+        [self.lblRoomTime setText:@"4-5pm"];
     }
     else{
-        [self.btnCheckedIn setImage:[UIImage imageNamed:@"edit_30.png"] forState:UIControlStateNormal];
+        [self.btnCheckedIn setImage:[UIImage imageNamed:@"edit.png"] forState:UIControlStateNormal];
         [self.btnCheckedIn addTarget:self action:@selector(editAction) forControlEvents:UIControlEventTouchUpInside];
+        [self.lblRoomName setText:@"Red Fort"];
+        [self.lblRoomDate setText:@"24 Apr"];
+        [self.lblRoomTime setText:@"5-5:30pm"];
     }
     
 }
 
 - (void)beautifyView:(UIView*)view{
-    [self.layer setCornerRadius:5.0];
+    [self.layer setCornerRadius:7.0];
     [self.layer setBorderWidth:0.5];
     [self.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+    [self setClipsToBounds:NO];
     
 }
 

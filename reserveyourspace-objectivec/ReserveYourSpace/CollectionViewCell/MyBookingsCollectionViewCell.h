@@ -15,7 +15,9 @@ extern NSString * const myBookingsCellID;
 @property (nonatomic, strong) IBOutlet UILabel *lblRoomName;
 @property (nonatomic, strong) IBOutlet UIButton *btnCancel;
 @property (nonatomic, strong) IBOutlet UIButton *btnCheckedIn;
+@property (strong, nonatomic) IBOutlet UILabel *lblRoomDate;
 @property (nonatomic, strong) IBOutlet UIButton *btnEdit;
+@property (strong, nonatomic) IBOutlet UILabel *lblRoomTime;
 
 
 + (UINib *)nib;
