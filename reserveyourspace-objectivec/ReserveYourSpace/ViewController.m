@@ -30,6 +30,7 @@
 @property (strong, nonatomic) UIView *controllerView;
 @property (nonatomic, strong) AVCaptureSession *captureSession;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *videoPreviewLayer;
+@property (strong, nonatomic) UIImageView *micImage;
 
 @end
 
@@ -38,7 +39,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    
+   // [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"brain.jpg"]]];
     [_collectionRooms registerNib:[CollectionViewCell nib] forCellWithReuseIdentifier:collectionCellID];
     [_collectionMyBookings registerNib:[MyBookingsCollectionViewCell nib] forCellWithReuseIdentifier:myBookingsCellID];
     [self addComponentsInOrder];
@@ -72,15 +73,18 @@
 
 -(void)addSearchBar{
 
-     _meetingRoomSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 20, self.view.frame.size.width - _buttonForDatePicker.frame.size.width, 56)];
+     _meetingRoomSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 60, self.view.frame.size.width - _buttonForDatePicker.frame.size.width, 56)];
     [_meetingRoomSearchBar setSearchBarStyle:UISearchBarStyleMinimal];
     _meetingRoomSearchBar.delegate = self;
+    _micImage = [[UIImageView alloc] initWithFrame:CGRectMake(245, 17, 20, 20)];
+    [_micImage setImage:[UIImage imageNamed:@"mic.png"]];
+    [_meetingRoomSearchBar.layer addSublayer:_micImage.layer];
     [self.view addSubview:_meetingRoomSearchBar];
 
 }
 
 -(void)addDatePickerButton{
-    _buttonForDatePicker = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 40, 28, 40, 40)];
+    _buttonForDatePicker = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 40, 65, 40, 40)];
     [_buttonForDatePicker setImage:[UIImage imageNamed:@"date.png"] forState:UIControlStateNormal];
     [self.view addSubview:_buttonForDatePicker];
 }
@@ -174,7 +178,7 @@
         AVMetadataMachineReadableCodeObject *metadataObj = [metadataObjects objectAtIndex:0];
         if ([[metadataObj type] isEqualToString:AVMetadataObjectTypeQRCode]) {
             //  [_response performSelectorOnMainThread:@selector(setText:) withObject:[metadataObj stringValue] waitUntilDone:NO];
-            [self performSelectorOnMainThread:@selector(showRoomDetails) withObject:nil waitUntilDone:NO];
+            [self performSelectorOnMainThread:@selector(showRoomDetails:) withObject:[metadataObj stringValue] waitUntilDone:NO];
             
             [self performSelectorOnMainThread:@selector(stopReading) withObject:nil waitUntilDone:NO];
             //  [_scanButton performSelectorOnMainThread:@selector(setTitle:) withObject:@"Start!" waitUntilDone:NO];
@@ -183,9 +187,24 @@
     }
 }
 
--(void)showRoomDetails{
-    MeetingDetailViewController *mdVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"mdVC"];
-    [self presentViewController:mdVC animated:YES completion:nil];
+-(void)showRoomDetails:(NSString*) roomName{
+    //Not available :(
+    if ([roomName isEqualToString:@"Indus"]) {
+        MeetingDetailViewController *mdVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"mdIndusVC"];
+        [self presentViewController:mdVC animated:YES completion:nil];
+    }
+    //Available :)
+    if ([roomName isEqualToString:@"Ajanta"]) {
+        MeetingDetailViewController *mdVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"mdVC"];
+        [self presentViewController:mdVC animated:YES completion:nil];
+    }
+    //Check in
+    if ([roomName isEqualToString:@"Corbett"]) {
+        MeetingDetailViewController *mdVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"mdCorbettVC"];
+        [self presentViewController:mdVC animated:YES completion:nil];
+    }
+    
+    
 }
 -(void)stopReading{
     [_captureSession stopRunning];
@@ -251,7 +270,7 @@
 -(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
     NSLog(@"searchbar text : searchBarTextDidBeginEditing" );
     [searchBar setShowsCancelButton:YES animated:YES];
-
+    [_micImage setHidden:YES];
     
 }
 
@@ -287,6 +306,7 @@
 {
     NSLog(@"pressed cross on search");
     [searchBar resignFirstResponder];
+    [_micImage setHidden:NO];
 }
 
 -(void)searchBarResultsListButtonClicked:(UISearchBar *)searchBar{
@@ -334,8 +354,18 @@
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    MeetingDetailViewController *mdVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"mdVC"];
-    [self presentViewController:mdVC animated:YES completion:nil];
+    
+    if(collectionView == _collectionMyBookings) {
+        MeetingDetailViewController *mdVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"mdCorbettVC"];
+        [self presentViewController:mdVC animated:YES completion:nil];
+    }
+    
+    
+    if(collectionView == _collectionRooms) {
+        MeetingDetailViewController *mdVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"mdVC"];
+        [self presentViewController:mdVC animated:YES completion:nil];
+    }
+    
     
 }
 //- (CGSize)collectionView:(UICollectionView *)collectionView

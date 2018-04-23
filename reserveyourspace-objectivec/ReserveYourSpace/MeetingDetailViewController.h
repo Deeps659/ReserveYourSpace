@@ -10,4 +10,13 @@
 
 @interface MeetingDetailViewController : UIViewController
 
+//@property (strong, nonatomic) IBOutlet UILabel *lblRoomName;
+//@property (strong, nonatomic) IBOutlet UILabel *lblBookingStatus;
+//@property (strong, nonatomic) IBOutlet UILabel *lblBookingTime;
+@property (strong, nonatomic) IBOutlet UIButton *btnBook;
+//@property (strong, nonatomic) IBOutlet UIImageView *imgEmoji;
+//
+//-(void)configureViewController:(NSString*) room;
+
+
 @end
