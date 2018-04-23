@@ -14,6 +14,7 @@
 		45097A3B208CE451003B5128 /* edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 45097A3A208CE451003B5128 /* edit.png */; };
 		45097A3D208CE4C3003B5128 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 45097A3C208CE4C3003B5128 /* cancel.png */; };
 		45097A3F208CE58D003B5128 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = 45097A3E208CE58D003B5128 /* check.png */; };
+		4512089E208D776D00EA75AD /* NewBookingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4512089D208D776D00EA75AD /* NewBookingViewController.m */; };
 		735DECFC2085EC54001C4894 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 735DECFB2085EC54001C4894 /* AppDelegate.m */; };
 		735DECFF2085EC54001C4894 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 735DECFE2085EC54001C4894 /* ViewController.m */; };
 		735DED022085EC54001C4894 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 735DED002085EC54001C4894 /* Main.storyboard */; };
@@ -71,6 +72,8 @@
 		45097A3A208CE451003B5128 /* edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit.png; sourceTree = "<group>"; };
 		45097A3C208CE4C3003B5128 /* cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel.png; sourceTree = "<group>"; };
 		45097A3E208CE58D003B5128 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
+		4512089C208D776D00EA75AD /* NewBookingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewBookingViewController.h; sourceTree = "<group>"; };
+		4512089D208D776D00EA75AD /* NewBookingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewBookingViewController.m; sourceTree = "<group>"; };
 		735DECF72085EC54001C4894 /* ReserveYourSpace.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReserveYourSpace.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		735DECFA2085EC54001C4894 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		735DECFB2085EC54001C4894 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -181,6 +184,8 @@
 				735DED032085EC54001C4894 /* ReserveYourSpace.xcdatamodeld */,
 				7746584F208A0F1E006B8C6D /* HomeViewController.h */,
 				77465850208A0F1E006B8C6D /* HomeViewController.m */,
+				4512089C208D776D00EA75AD /* NewBookingViewController.h */,
+				4512089D208D776D00EA75AD /* NewBookingViewController.m */,
 			);
 			path = ReserveYourSpace;
 			sourceTree = "<group>";
@@ -413,6 +418,7 @@
 				735DECFF2085EC54001C4894 /* ViewController.m in Sources */,
 				735DED3820860609001C4894 /* CollectionViewCell.m in Sources */,
 				735DECFC2085EC54001C4894 /* AppDelegate.m in Sources */,
+				4512089E208D776D00EA75AD /* NewBookingViewController.m in Sources */,
 				735DED0D2085EC54001C4894 /* main.m in Sources */,
 				735DED052085EC54001C4894 /* ReserveYourSpace.xcdatamodeld in Sources */,
 				77465851208A0F1E006B8C6D /* HomeViewController.m in Sources */,
