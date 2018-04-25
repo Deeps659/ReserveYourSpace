@@ -11,6 +11,8 @@
 @implementation MyBookingsCollectionViewCell
 NSString * const myBookingsCellID = @"myBookingsCellID";
 
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0x00FF00) >>  8))/255.0 blue:((float)((rgbValue & 0x0000FF) >>  0))/255.0 alpha:1.0]
+
 
 + (UINib *)nib
 {
@@ -46,6 +48,7 @@ NSString * const myBookingsCellID = @"myBookingsCellID";
     [self.layer setCornerRadius:7.0];
     [self.layer setBorderWidth:0.5];
     [self.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+    [self.contentView setBackgroundColor:UIColorFromRGB(0xD6E6F5)];
     [self setClipsToBounds:NO];
     
 }

@@ -29,7 +29,7 @@ NSString * const collectionCellID = @"collectionCellID";
     [self.layer setCornerRadius:5.0];
     [self.layer setBorderWidth:0.5];
     [self.layer setBorderColor:[UIColor lightGrayColor].CGColor];
-    
+    [self.contentView setBackgroundColor:UIColorFromRGB(0xD6E6F5)];
     [self.lblRoomCapacity setText:@""];
 }
 -(void)initializeCellValues:(NSIndexPath*)indexPath {

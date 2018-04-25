@@ -29,6 +29,10 @@
     [self dismissViewControllerAnimated:YES completion:nil];
     
 }
+- (IBAction)openAjanta:(id)sender {
+    MeetingDetailViewController *mdVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"mdVC"];
+    [self presentViewController:mdVC animated:YES completion:nil];
+}
 
 
 /*

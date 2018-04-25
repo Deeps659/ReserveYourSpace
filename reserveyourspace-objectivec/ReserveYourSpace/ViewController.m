@@ -36,10 +36,12 @@
 
 @implementation ViewController
 
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0x00FF00) >>  8))/255.0 blue:((float)((rgbValue & 0x0000FF) >>  0))/255.0 alpha:1.0]
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-   // [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"brain.jpg"]]];
+   // [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"back2.jpg"]]];
     [_collectionRooms registerNib:[CollectionViewCell nib] forCellWithReuseIdentifier:collectionCellID];
     [_collectionMyBookings registerNib:[MyBookingsCollectionViewCell nib] forCellWithReuseIdentifier:myBookingsCellID];
     [self addComponentsInOrder];
@@ -148,7 +150,7 @@
                 
                 _videoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:_captureSession];
                 [_videoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
-                _controllerView = [[UIView alloc] initWithFrame:CGRectMake(_collectionRooms.frame.origin.x, _collectionRooms.frame.origin.y + _collectionRooms.frame.size.height, _collectionRooms.frame.size.width, height)];
+                _controllerView = [[UIView alloc] initWithFrame:CGRectMake(_collectionRooms.frame.origin.x+30, _collectionRooms.frame.origin.y + _collectionRooms.frame.size.height, _collectionRooms.frame.size.width-_collectionRooms.frame.size.width/4, height)];
                 [_videoPreviewLayer setFrame:_controllerView.layer.bounds];
                 
                 [_controllerView.layer addSublayer:_videoPreviewLayer];
@@ -164,7 +166,7 @@
         else{
             
             if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
-                [_controllerView setFrame:CGRectMake(_collectionRooms.frame.origin.x, _collectionRooms.frame.origin.y + _collectionRooms.frame.size.height, _collectionRooms.frame.size.width, height)];
+                [_controllerView setFrame:CGRectMake(_collectionRooms.frame.origin.x+30, _collectionRooms.frame.origin.y + _collectionRooms.frame.size.height, _collectionRooms.frame.size.width-_collectionRooms.frame.size.width/4, height)];
             }
             else{
             CGFloat height = 272;
@@ -180,7 +182,7 @@
             //  [_response performSelectorOnMainThread:@selector(setText:) withObject:[metadataObj stringValue] waitUntilDone:NO];
             [self performSelectorOnMainThread:@selector(showRoomDetails:) withObject:[metadataObj stringValue] waitUntilDone:NO];
             
-            [self performSelectorOnMainThread:@selector(stopReading) withObject:nil waitUntilDone:NO];
+            //[self performSelectorOnMainThread:@selector(stopReading) withObject:nil waitUntilDone:NO];
             //  [_scanButton performSelectorOnMainThread:@selector(setTitle:) withObject:@"Start!" waitUntilDone:NO];
             //   _isReading = NO;
         }
@@ -218,7 +220,9 @@
     if(_qrCodeImage)
     [_collectionMyBookings setFrame:CGRectMake(_qrCodeImage.frame.origin.x, _qrCodeImage.frame.origin.y + _qrCodeImage.frame.size.height +50, _qrCodeImage.frame.size.width, 100)];
     else
-    [_collectionMyBookings setFrame:CGRectMake(_controllerView.frame.origin.x, _controllerView.frame.origin.y + _controllerView.frame.size.height +50, _controllerView.frame.size.width, 100)];
+    [_collectionMyBookings setFrame:CGRectMake(_collectionRooms.frame.origin.x, _controllerView.frame.origin.y + _controllerView.frame.size.height +50, _collectionRooms.frame.size.width, 100)];
+    
+//    [_collectionMyBookings setFrame:CGRectMake(_collectionRooms.frame.origin.x, _controllerView.frame.origin.y + _collectionRooms.frame.size.height, _collectionRooms.frame.size.width, 100)];
     
     if(_myBookingsLabel == nil){
         _myBookingsLabel = [[UILabel alloc] initWithFrame:CGRectMake(_collectionMyBookings.frame.origin.x, _collectionMyBookings.frame.origin.y - 30, _collectionMyBookings.frame.size.width, 30)];
@@ -276,6 +280,7 @@
 
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
     NSLog(@"searchbar text : textDidChange %@ ",searchText );
+    
     if([searchText isEqualToString:@"a"] || [searchText isEqualToString:@"A"])
         searchData = [[NSMutableArray alloc] initWithObjects:@"A",@"Ab",@"Abc", nil]; // this is initialised here so that when user enters a text (preferably 'a' or 'A'). we can populate the list with rooms
     else
